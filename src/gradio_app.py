@@ -166,7 +166,7 @@ h3 { margin-top: 0.5em; margin-bottom: 0.3em; }
 
 
 def create_ui() -> gr.Blocks:
-    with gr.Blocks(title="OS 内存管理模拟", css=CSS) as demo:
+    with gr.Blocks(title="OS 内存管理模拟") as demo:
         gr.Markdown(
             """
             # 🖥 操作系统内存管理模拟
@@ -180,7 +180,7 @@ def create_ui() -> gr.Blocks:
                 gr.Markdown("#### 内存请求序列")
                 req_table = gr.Dataframe(
                     headers=["操作", "大小(K)", "作业号"],
-                    values=[list(r) for r in REQUESTS],
+                    value=[list(r) for r in REQUESTS],
                     interactive=False,
                 )
 
@@ -193,14 +193,12 @@ def create_ui() -> gr.Blocks:
                         ff_table = gr.Dataframe(
                             headers=["操作", "结果", "空闲分区链"],
                             interactive=False,
-                            wrap=True,
                         )
                     with gr.Column():
                         gr.Markdown("**最佳适应 (Best Fit)**")
                         bf_table = gr.Dataframe(
                             headers=["操作", "结果", "空闲分区链"],
                             interactive=False,
-                            wrap=True,
                         )
 
                 btn_dp.click(fn=dp_table, outputs=[ff_table, bf_table])
@@ -233,7 +231,6 @@ def create_ui() -> gr.Blocks:
                         trace_table = gr.Dataframe(
                             headers=["序号", "指令地址", "页号", "页内偏移", "物理地址", "缺页"],
                             interactive=False,
-                            max_rows=100,
                         )
 
                 def on_run_pg(algo_name, blocks, seed):
@@ -242,7 +239,7 @@ def create_ui() -> gr.Blocks:
                     trace_rows = [[
                         t["序号"], t["指令地址"], t["页号"],
                         t["页内偏移"], t["物理地址"], t["缺页"],
-                    ] for t in result["trace"]]
+                    ] for t in result["trace"][:100]]  # 只显示前100条
                     return (
                         str(result["page_faults"]),
                         f"{result['rate']:.2f}%",
@@ -260,4 +257,4 @@ def create_ui() -> gr.Blocks:
 
 def launch():
     demo = create_ui()
-    demo.launch(show_error=True)
+    demo.launch(show_error=True, css=CSS)

@@ -9,7 +9,7 @@ env/
 .venv/
 
 # Build / packaging
-dist/
+dist/os_mm
 build/
 *.spec
 *.exe
@@ -24,3 +24,5 @@ Thumbs.db
 
 # Project
 needs.md
+docs
+.claude

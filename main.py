@@ -78,11 +78,19 @@ def run_console():
 
 def run_web():
     """启动 Gradio Web 版。"""
-    from src.gradio_app import create_ui
+    import sys
+    if getattr(sys, "frozen", False):
+        console.print(
+            "\n[yellow]⚠ Web 版不支持 PyInstaller 打包运行[/yellow]\n"
+            "[dim](Gradio 依赖链复杂，打包后文件路径无法正确解析)[/dim]\n"
+            "[dim]请使用源码运行: python main.py[/dim]\n"
+        )
+        return
+
+    from src.gradio_app import launch as launch_web
     console.print("\n[cyan]正在启动 Web 服务...[/cyan]")
     console.print("[dim]浏览器打开后即可使用，Ctrl+C 停止。[/dim]\n")
-    demo = create_ui()
-    demo.launch(show_error=True)
+    launch_web()
 
 
 def main():
