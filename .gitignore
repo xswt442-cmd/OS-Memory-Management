@@ -1,0 +1,26 @@
+# Dependencies
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Build / packaging
+dist/
+build/
+*.spec
+*.exe
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project
+needs.md
