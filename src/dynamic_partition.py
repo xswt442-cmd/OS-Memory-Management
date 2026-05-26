@@ -9,10 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
-# ---------------------------------------------------------------------------
-# 数据结构
-# ---------------------------------------------------------------------------
 
+# 数据结构
 @dataclass
 class FreeBlock:
     start: int  # 起始地址 (K)
@@ -26,10 +24,7 @@ class AllocatedBlock:
     size: int
 
 
-# ---------------------------------------------------------------------------
 # 空闲分区合并与回收
-# ---------------------------------------------------------------------------
-
 def _merge(free_list: list[FreeBlock]) -> None:
     """合并相邻空闲分区并按地址排序。"""
     if not free_list:
@@ -46,10 +41,7 @@ def _merge(free_list: list[FreeBlock]) -> None:
             i += 1
 
 
-# ---------------------------------------------------------------------------
 # First Fit — 返回分配起始地址, 失败返回 -1
-# ---------------------------------------------------------------------------
-
 def first_fit_alloc(free_list: list[FreeBlock], size: int) -> int:
     for blk in free_list:
         if blk.size >= size:
@@ -62,10 +54,7 @@ def first_fit_alloc(free_list: list[FreeBlock], size: int) -> int:
     return -1
 
 
-# ---------------------------------------------------------------------------
-# Best Fit
-# ---------------------------------------------------------------------------
-
+# bestfit
 def best_fit_alloc(free_list: list[FreeBlock], size: int) -> int:
     best: FreeBlock | None = None
     for blk in free_list:
@@ -81,10 +70,7 @@ def best_fit_alloc(free_list: list[FreeBlock], size: int) -> int:
     return addr
 
 
-# ---------------------------------------------------------------------------
 # 回收
-# ---------------------------------------------------------------------------
-
 def _do_free(free_list: list[FreeBlock], allocated: dict[int, AllocatedBlock], job_id: int) -> bool:
     if job_id not in allocated:
         return False
@@ -94,10 +80,7 @@ def _do_free(free_list: list[FreeBlock], allocated: dict[int, AllocatedBlock], j
     return True
 
 
-# ---------------------------------------------------------------------------
 # 格式化
-# ---------------------------------------------------------------------------
-
 def format_free_list(free_list: list[FreeBlock]) -> str:
     if not free_list:
         return "(全部已分配)"
@@ -114,10 +97,7 @@ def format_allocated(allocated: dict[int, AllocatedBlock]) -> str:
     return " | ".join(parts)
 
 
-# ---------------------------------------------------------------------------
 # 预定义请求序列
-# ---------------------------------------------------------------------------
-
 REQUESTS: list[tuple[str, int, int]] = [
     # (操作, 大小/忽略, 作业号)  — 操作: 'A'=分配 'F'=回收
     ("A", 130, 1),
@@ -134,10 +114,7 @@ REQUESTS: list[tuple[str, int, int]] = [
 ]
 
 
-# ---------------------------------------------------------------------------
 # 模拟运行
-# ---------------------------------------------------------------------------
-
 def simulate(algo_name: str, alloc_fn) -> None:
     free_list = [FreeBlock(0, 640)]
     allocated: dict[int, AllocatedBlock] = {}
